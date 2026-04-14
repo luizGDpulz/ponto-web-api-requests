@@ -1,8 +1,8 @@
 {
   "info": {
-    "name": "Secullum Ponto Web - Integra??o Externa",
+    "name": "Secullum Ponto Web - Integração Externa",
     "_postman_id": "b1119d3e-33b8-4d8e-8a9c-72f8a5756a03",
-    "description": "Collection validada contra o Swagger vivo e o manual PDF da integra??o externa do Secullum Ponto Web.\n\nFluxo recomendado:\n1. Gerar o token em `Autentica??o e Sele??o de Banco/Token`.\n2. Opcionalmente consultar `Reivindica??es do Token`.\n3. Listar bancos e definir `selected_bank_id`.\n4. Executar as rotas de `IntegracaoExterna` com `Authorization: Bearer {{access_token}}` e o header `secullumidbancoselecionado`.\n\nDiverg?ncias observadas entre as fontes:\n- O manual PDF ainda descreve `IntegracaoExterna/Pendencias`, mas essa rota n?o aparece no swagger atual.\n- O swagger atual exp?e `GravarLogsIniciarBkp` e `PontoOffline/AssinaturaArquivo/Assinar`, que n?o aparecem no PDF.\n- Em caso de conflito entre PDF e API viva, esta collection prioriza o swagger atual.",
+    "description": "Collection validada contra o Swagger vivo e o manual PDF da integração externa do Secullum Ponto Web.\n\nFluxo recomendado:\n1. Gerar o token em `Autenticação e Seleção de Banco/Token`.\n2. Opcionalmente consultar `Reivindicações do Token`.\n3. Listar bancos e definir `selected_bank_id`.\n4. Executar as rotas de `IntegracaoExterna` com `Authorization: Bearer {{access_token}}` e o header `secullumidbancoselecionado`.\n\nDivergências observadas entre as fontes:\n- O manual PDF ainda descreve `IntegracaoExterna/Pendencias`, mas essa rota não aparece no swagger atual.\n- O swagger atual expõe `GravarLogsIniciarBkp` e `PontoOffline/AssinaturaArquivo/Assinar`, que não aparecem no PDF.\n- Em caso de conflito entre PDF e API viva, esta collection prioriza o swagger atual.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "auth": {
@@ -26,7 +26,7 @@
       "key": "base_url_api",
       "value": "https://pontowebintegracaoexterna.secullum.com.br",
       "type": "string",
-      "description": "Base da API de integra??o externa do Ponto Web."
+      "description": "Base da API de integração externa do Ponto Web."
     },
     {
       "key": "username",
@@ -56,13 +56,13 @@
       "key": "selected_bank_identificador",
       "value": "",
       "type": "string",
-      "description": "Identificador do banco normalizado sem caracteres especiais, conforme observa??o do manual."
+      "description": "Identificador do banco normalizado sem caracteres especiais, conforme observação do manual."
     },
     {
       "key": "selected_bank_name",
       "value": "",
       "type": "string",
-      "description": "Nome amig?vel do banco retornado em Listar Bancos."
+      "description": "Nome amigável do banco retornado em Listar Bancos."
     },
     {
       "key": "empresa_documento",
@@ -202,7 +202,7 @@
                 "Token"
               ]
             },
-            "description": "Obt?m o access_token via `grant_type=password`. O teste salva automaticamente o valor em `access_token`.",
+            "description": "Obtém o access_token via `grant_type=password`. O teste salva automaticamente o valor em `access_token`.",
             "body": {
               "mode": "urlencoded",
               "urlencoded": [
@@ -250,7 +250,7 @@
           ]
         },
         {
-          "name": "Reinvindicações Token",
+          "name": "Reivindicações do Token",
           "request": {
             "method": "POST",
             "header": [
@@ -309,7 +309,7 @@
                 "ListarBancos"
               ]
             },
-            "description": "Lista os bancos dispon?veis para o token atual. O teste salva o primeiro retorno em `selected_bank_id`, `selected_bank_identificador` e `selected_bank_name`."
+            "description": "Lista os bancos disponíveis para o token atual. O teste salva o primeiro retorno em `selected_bank_id`, `selected_bank_identificador` e `selected_bank_name`."
           },
           "response": [],
           "event": [
@@ -480,10 +480,10 @@
                 "AtividadesLancamentos"
               ]
             },
-            "description": "Inclui ou altera um lan?amento de atividade. Campos m?nimos do swagger/manual: `atividadeDescricao`, `dataInicio` e `horaInicio`; para atividade com in?cio/fim, informe tamb?m `dataFim` e `horaFim`.",
+            "description": "Inclui ou altera um lançamento de atividade. Campos mínimos do swagger/manual: `atividadeDescricao`, `dataInicio` e `horaInicio`; para atividade com início/fim, informe também `dataFim` e `horaFim`.",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"funcionarioPis\": \"{{funcionario_pis}}\",\n  \"funcionarioCpf\": \"{{funcionario_cpf}}\",\n  \"atividadeDescricao\": \"{{atividade_descricao}}\",\n  \"dataInicio\": \"2024-04-17\",\n  \"horaInicio\": \"08:00\",\n  \"dataFim\": \"2024-04-17\",\n  \"horaFim\": \"17:00\",\n  \"observacao\": \"Lan?amento via Postman\",\n  \"lancarParaTodos\": false\n}",
+              "raw": "{\n  \"funcionarioPis\": \"{{funcionario_pis}}\",\n  \"funcionarioCpf\": \"{{funcionario_cpf}}\",\n  \"atividadeDescricao\": \"{{atividade_descricao}}\",\n  \"dataInicio\": \"2024-04-17\",\n  \"horaInicio\": \"08:00\",\n  \"dataFim\": \"2024-04-17\",\n  \"horaFim\": \"17:00\",\n  \"observacao\": \"Lançamento via Postman\",\n  \"lancarParaTodos\": false\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -539,7 +539,7 @@
                 }
               ]
             },
-            "description": "Lista lan?amentos de atividades. Observa??o: o PDF mostra `HoraInicio`/`HoraFim` no exemplo, mas o swagger atual exp?e apenas `FuncionarioPis`, `FuncionarioCpf`, `AtividadeDescricao`, `DataInicio` e `DataFim` neste GET."
+            "description": "Lista lançamentos de atividades. Observação: o PDF mostra `HoraInicio`/`HoraFim` no exemplo, mas o swagger atual expõe apenas `FuncionarioPis`, `FuncionarioCpf`, `AtividadeDescricao`, `DataInicio` e `DataFim` neste GET."
           },
           "response": []
         },
@@ -761,10 +761,10 @@
                 "CartaoPonto"
               ]
             },
-            "description": "Exclui uma batida ou justificativa do cart?o ponto. Informe ao menos um identificador (`cpf`, `pis` ou `numeroFolha`), al?m de `data`, `coluna` e `motivo`.",
+            "description": "Exclui uma batida ou justificativa do cartão ponto. Informe ao menos um identificador (`cpf`, `pis` ou `numeroFolha`), além de `data`, `coluna` e `motivo`.",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"cpf\": \"{{funcionario_cpf}}\",\n  \"pis\": \"{{funcionario_pis}}\",\n  \"numeroFolha\": \"123\",\n  \"data\": \"2024-04-17\",\n  \"coluna\": \"Saida1\",\n  \"motivo\": \"Funcion?rio marcou incorretamente\"\n}",
+              "raw": "{\n  \"cpf\": \"{{funcionario_cpf}}\",\n  \"pis\": \"{{funcionario_pis}}\",\n  \"numeroFolha\": \"123\",\n  \"data\": \"2024-04-17\",\n  \"coluna\": \"Saida1\",\n  \"motivo\": \"Funcionário marcou incorretamente\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -803,7 +803,7 @@
                 "Justificativa"
               ]
             },
-            "description": "Aplica uma justificativa a um grupo de marca??es (`grupo` de 1 a 5). Informe ao menos um identificador (`cpf`, `pis` ou `numeroFolha`).",
+            "description": "Aplica uma justificativa a um grupo de marcações (`grupo` de 1 a 5). Informe ao menos um identificador (`cpf`, `pis` ou `numeroFolha`).",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"cpf\": \"{{funcionario_cpf}}\",\n  \"pis\": \"{{funcionario_pis}}\",\n  \"numeroFolha\": \"123\",\n  \"data\": \"2024-04-17\",\n  \"grupo\": 1,\n  \"justificativa\": \"ATEST\"\n}",
@@ -845,7 +845,7 @@
                 "Manual"
               ]
             },
-            "description": "Inclui ou edita uma batida manual. Informe ao menos um identificador (`cpf`, `pis` ou `numeroFolha`), al?m de `data`, `hora`, `coluna` e `motivo`.",
+            "description": "Inclui ou edita uma batida manual. Informe ao menos um identificador (`cpf`, `pis` ou `numeroFolha`), além de `data`, `hora`, `coluna` e `motivo`.",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"cpf\": \"{{funcionario_cpf}}\",\n  \"pis\": \"{{funcionario_pis}}\",\n  \"numeroFolha\": \"123\",\n  \"data\": \"2024-04-17\",\n  \"hora\": \"08:00\",\n  \"coluna\": \"Entrada1\",\n  \"motivo\": \"Ajuste manual autorizado\"\n}",
@@ -929,7 +929,7 @@
                 "TrocaDia"
               ]
             },
-            "description": "Move uma batida para o dia anterior ou posterior. A diferen?a entre `dataOrigem` e `dataDestino` deve ser de no m?ximo um dia.",
+            "description": "Move uma batida para o dia anterior ou posterior. A diferença entre `dataOrigem` e `dataDestino` deve ser de no máximo um dia.",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"cpf\": \"{{funcionario_cpf}}\",\n  \"pis\": \"{{funcionario_pis}}\",\n  \"numeroFolha\": \"123\",\n  \"dataOrigem\": \"2024-04-17\",\n  \"dataDestino\": \"2024-04-18\",\n  \"coluna\": \"Saida1\"\n}",
@@ -1735,10 +1735,10 @@
                 "FuncionariosAfastamentos"
               ]
             },
-            "description": "Inclui ou altera um afastamento. Informe `numeroPis` ou `cpf`, al?m de `inicio`, `fim` e `justificativaNome`.",
+            "description": "Inclui ou altera um afastamento. Informe `numeroPis` ou `cpf`, além de `inicio`, `fim` e `justificativaNome`.",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"numeroPis\": \"{{funcionario_pis}}\",\n  \"cpf\": \"{{funcionario_cpf}}\",\n  \"inicio\": \"2024-04-17\",\n  \"fim\": \"2024-04-18\",\n  \"motivo\": \"Atestado m?dico\",\n  \"justificativaNome\": \"ATEST\"\n}",
+              "raw": "{\n  \"numeroPis\": \"{{funcionario_pis}}\",\n  \"cpf\": \"{{funcionario_cpf}}\",\n  \"inicio\": \"2024-04-17\",\n  \"fim\": \"2024-04-18\",\n  \"motivo\": \"Atestado médico\",\n  \"justificativaNome\": \"ATEST\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -2035,7 +2035,7 @@
       ]
     },
     {
-      "name": "Opera??es Auxiliares",
+      "name": "Operações Auxiliares",
       "item": [
         {
           "name": "Gravar logs e iniciar backup",
@@ -2061,7 +2061,7 @@
                 "GravarLogsIniciarBkp"
               ]
             },
-            "description": "Endpoint exposto no swagger atual e n?o documentado no PDF. N?o possui corpo e requer apenas o header `secullumidbancoselecionado`."
+            "description": "Endpoint exposto no swagger atual e não documentado no PDF. Não possui corpo e requer apenas o header `secullumidbancoselecionado`."
           },
           "response": []
         }
@@ -2243,7 +2243,7 @@
                 "Incluir"
               ]
             },
-            "description": "Cria uma nova inclus?o de ponto. Se `marcacaoOffline=true`, informe `dataHora` no formato `yyyy-MM-ddTHH:mm`; caso contr?rio, a API usa a data/hora do servidor.",
+            "description": "Cria uma nova inclusão de ponto. Se `marcacaoOffline=true`, informe `dataHora` no formato `yyyy-MM-ddTHH:mm`; caso contrário, a API usa a data/hora do servidor.",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"pis\": \"{{funcionario_pis}}\",\n  \"cpf\": \"{{funcionario_cpf}}\",\n  \"endereco\": \"Rua Exemplo, 100\",\n  \"latitude\": -30.0346,\n  \"longitude\": -51.2177,\n  \"precisao\": 10,\n  \"dataHora\": \"2024-04-17T14:30\",\n  \"justificativa\": \"ATEST\",\n  \"foto\": \"\",\n  \"identificacaoDispositivo\": \"android-sm-s911b\",\n  \"marcacaoOffline\": true\n}",
@@ -2708,7 +2708,7 @@
                 "Assinar"
               ]
             },
-            "description": "Endpoint exposto no swagger atual e n?o documentado no PDF. Envie o arquivo no campo `file` usando `multipart/form-data`.",
+            "description": "Endpoint exposto no swagger atual e não documentado no PDF. Envie o arquivo no campo `file` usando `multipart/form-data`.",
             "body": {
               "mode": "formdata",
               "formdata": [

@@ -1,0 +1,6 @@
+info:
+  name: Motivos de Demissão
+  type: folder
+  seq: 19
+request:
+  auth: inherit

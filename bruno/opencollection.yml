@@ -1,0 +1,91 @@
+opencollection: 1.0.0
+info:
+  name: Secullum Ponto Web - Integração Externa
+request:
+  auth:
+    type: bearer
+    token: '{{access_token}}'
+  variables:
+    - name: base_url_auth
+      value: https://autenticador.secullum.com.br
+    - name: base_url_api
+      value: https://pontowebintegracaoexterna.secullum.com.br
+    - name: username
+      value: ''
+    - name: password
+      value: ''
+    - name: access_token
+      value: ''
+    - name: selected_bank_id
+      value: ''
+    - name: selected_bank_identificador
+      value: ''
+    - name: selected_bank_name
+      value: ''
+    - name: empresa_documento
+      value: '12345678000199'
+    - name: horario_numero
+      value: '100'
+    - name: funcao_descricao
+      value: Analista de Suporte
+    - name: departamento_descricao
+      value: Suporte
+    - name: estrutura_descricao
+      value: Estrutura Exemplo
+    - name: funcionario_id
+      value: '1'
+    - name: funcionario_cpf
+      value: '03651124029'
+    - name: funcionario_pis
+      value: '12345678901'
+    - name: motivo_demissao_descricao
+      value: Pedido de demissão
+    - name: justificativa_descricao
+      value: ATEST
+    - name: pergunta_descricao
+      value: Campo adicional de exemplo
+    - name: grupo
+      value: Integracao
+    - name: descricao
+      value: Exemplo
+    - name: data_inicio
+      value: '2024-01-01'
+    - name: data_fim
+      value: '2024-01-31'
+    - name: hora_inicio
+      value: 08:00
+    - name: hora_fim
+      value: 18:00
+    - name: equipamento_id
+      value: '1'
+    - name: origem
+      value: '8'
+    - name: fonte_dados_id
+      value: '1'
+    - name: lancamento_atividade_id
+      value: '1'
+    - name: atividade_descricao
+      value: Atividade Exemplo
+docs: >-
+  Collection validada contra o Swagger vivo e o manual PDF da integração externa do Secullum Ponto Web.
+
+
+  Fluxo recomendado:
+
+  1. Gerar o token em `Autenticação e Seleção de Banco/Token`.
+
+  2. Opcionalmente consultar `Reivindicações do Token`.
+
+  3. Listar bancos e definir `selected_bank_id`.
+
+  4. Executar as rotas de `IntegracaoExterna` com `Authorization: Bearer {{access_token}}` e o header
+  `secullumidbancoselecionado`.
+
+
+  Divergências observadas entre as fontes:
+
+  - O manual PDF ainda descreve `IntegracaoExterna/Pendencias`, mas essa rota não aparece no swagger atual.
+
+  - O swagger atual expõe `GravarLogsIniciarBkp` e `PontoOffline/AssinaturaArquivo/Assinar`, que não aparecem no PDF.
+
+  - Em caso de conflito entre PDF e API viva, esta collection prioriza o swagger atual.

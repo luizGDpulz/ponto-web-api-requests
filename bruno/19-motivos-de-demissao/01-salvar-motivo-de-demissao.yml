@@ -1,0 +1,27 @@
+info:
+  name: Salvar motivo de demissão
+  type: http
+  seq: 1
+http:
+  method: POST
+  url: '{{base_url_api}}/IntegracaoExterna/MotivosDemissao'
+  headers:
+    - name: Accept
+      value: application/json
+    - name: secullumidbancoselecionado
+      value: '{{selected_bank_id}}'
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "descricao": "{{motivo_demissao_descricao}}"
+      }
+  auth: inherit
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+docs: 'Salvar novo motivo de demissão. Campo: descrição (50c, obrigatório).'

@@ -1,0 +1,6 @@
+info:
+  name: Estruturas
+  type: folder
+  seq: 10
+request:
+  auth: inherit

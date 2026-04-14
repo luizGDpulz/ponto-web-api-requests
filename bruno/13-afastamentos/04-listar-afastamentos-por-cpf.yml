@@ -1,0 +1,30 @@
+info:
+  name: Listar afastamentos por CPF
+  type: http
+  seq: 4
+http:
+  method: GET
+  url: >-
+    {{base_url_api}}/IntegracaoExterna/FuncionariosAfastamentos/Cpf?dataInicio={{data_inicio}}&dataFim={{data_fim}}&funcionarioCpf={{funcionario_cpf}}
+  headers:
+    - name: Accept
+      value: application/json
+    - name: secullumidbancoselecionado
+      value: '{{selected_bank_id}}'
+  params:
+    - name: dataInicio
+      value: '{{data_inicio}}'
+      type: query
+    - name: dataFim
+      value: '{{data_fim}}'
+      type: query
+    - name: funcionarioCpf
+      value: '{{funcionario_cpf}}'
+      type: query
+  auth: inherit
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+docs: 'Listar afastamentos pelo CPF. Filtros: dataInício, dataFim, funcionarioCpf.'

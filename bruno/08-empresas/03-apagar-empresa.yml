@@ -1,0 +1,23 @@
+info:
+  name: Apagar empresa
+  type: http
+  seq: 3
+http:
+  method: DELETE
+  url: '{{base_url_api}}/IntegracaoExterna/Empresas?cnpjCpf={{empresa_documento}}'
+  headers:
+    - name: Accept
+      value: application/json
+    - name: secullumidbancoselecionado
+      value: '{{selected_bank_id}}'
+  params:
+    - name: cnpjCpf
+      value: '{{empresa_documento}}'
+      type: query
+  auth: inherit
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+docs: Apagar empresa pelo CNPJ/CPF.

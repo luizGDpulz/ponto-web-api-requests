@@ -1,0 +1,32 @@
+info:
+  name: Trocar batida de coluna
+  type: http
+  seq: 4
+http:
+  method: POST
+  url: '{{base_url_api}}/IntegracaoExterna/CartaoPonto/Troca'
+  headers:
+    - name: Accept
+      value: application/json
+    - name: secullumidbancoselecionado
+      value: '{{selected_bank_id}}'
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "cpf": "{{funcionario_cpf}}",
+        "pis": "{{funcionario_pis}}",
+        "numeroFolha": "123",
+        "data": "2024-04-17",
+        "colunaOrigem": "Saida1",
+        "colunaDestino": "Saida2"
+      }
+  auth: inherit
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+docs: Troca o valor de uma coluna por outra no mesmo dia. Informe ao menos um identificador (`cpf`, `pis` ou `numeroFolha`).

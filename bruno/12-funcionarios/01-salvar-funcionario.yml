@@ -1,0 +1,74 @@
+info:
+  name: Salvar funcionário
+  type: http
+  seq: 1
+http:
+  method: POST
+  url: '{{base_url_api}}/IntegracaoExterna/Funcionarios'
+  headers:
+    - name: Accept
+      value: application/json
+    - name: secullumidbancoselecionado
+      value: '{{selected_bank_id}}'
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "empresaId": 1,
+        "nome": "string",
+        "numeroFolha": "string",
+        "numeroIdentificador": "string",
+        "codigoHolerite": "string",
+        "numeroPis": "{{funcionario_pis}}",
+        "carteira": "string",
+        "observacao": "string",
+        "endereco": "Rua Exemplo, 100",
+        "bairro": "string",
+        "cidade": "string",
+        "uf": "RS",
+        "cep": "93700000",
+        "telefone": "51999999999",
+        "celular": "51999999999",
+        "email": "usuario@exemplo.com",
+        "rg": "string",
+        "expedicaoRg": "2022-06-26",
+        "ssp": "string",
+        "cpf": "{{funcionario_cpf}}",
+        "mae": "string",
+        "pai": "string",
+        "nascimento": "2022-06-26",
+        "naoVerificarDigital": false,
+        "masculino": false,
+        "master": false,
+        "nacionalidade": "string",
+        "naturalidade": "string",
+        "numeroProvisorio": "string",
+        "admissao": "2022-06-26",
+        "demissao": "2022-06-26",
+        "empresaCnpjCpf": "{{empresa_documento}}",
+        "horarioNumero": 100,
+        "departamentoDescricao": "{{departamento_descricao}}",
+        "funcaoDescricao": "{{funcao_descricao}}",
+        "filtro1Descricao": "Exemplo",
+        "filtro2Descricao": "Exemplo",
+        "motivoDemissaoDescricao": "Exemplo",
+        "senhaEquipamento": 0,
+        "foto": "",
+        "alterouFoto": false,
+        "invisivel": false,
+        "desabilitarAssinaturaEletronica": false,
+        "descricaoEstrutura": "{{descricaoestrutura}}",
+        "duplicarDemitido": false
+      }
+  auth: inherit
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+docs: >-
+  Salvar novo funcionário. Campos obrigatórios: nome, numeroFolha, CPF, admiténcia, empresa, horário, departamento,
+  função. Campo chave: CPF. IMPORTANTE: Consulte manual para PIS/PASEP (pode ser obrigatório com equipamentos
+  REP-A/REP-C).

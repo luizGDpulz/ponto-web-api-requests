@@ -1,0 +1,34 @@
+info:
+  name: Exclusão de batida
+  type: http
+  seq: 1
+http:
+  method: DELETE
+  url: '{{base_url_api}}/IntegracaoExterna/CartaoPonto'
+  headers:
+    - name: Accept
+      value: application/json
+    - name: secullumidbancoselecionado
+      value: '{{selected_bank_id}}'
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "cpf": "{{funcionario_cpf}}",
+        "pis": "{{funcionario_pis}}",
+        "numeroFolha": "123",
+        "data": "2024-04-17",
+        "coluna": "Saida1",
+        "motivo": "Funcionário marcou incorretamente"
+      }
+  auth: inherit
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+docs: >-
+  Exclui uma batida ou justificativa do cartão ponto. Informe ao menos um identificador (`cpf`, `pis` ou `numeroFolha`),
+  além de `data`, `coluna` e `motivo`.

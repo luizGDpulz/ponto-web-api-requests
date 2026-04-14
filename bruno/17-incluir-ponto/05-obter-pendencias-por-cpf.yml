@@ -1,0 +1,23 @@
+info:
+  name: Obter pendências por CPF
+  type: http
+  seq: 5
+http:
+  method: GET
+  url: '{{base_url_api}}/IntegracaoExterna/InclusaoPonto/Pendencias/Cpf?cpf={{funcionario_cpf}}'
+  headers:
+    - name: Accept
+      value: application/json
+    - name: secullumidbancoselecionado
+      value: '{{selected_bank_id}}'
+  params:
+    - name: cpf
+      value: '{{funcionario_cpf}}'
+      type: query
+  auth: inherit
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+docs: 'Tag: Incluir Ponto. OperationId: GetPendenciasPorCpfAsync'

@@ -1,0 +1,23 @@
+info:
+  name: Listar justificativas
+  type: http
+  seq: 2
+http:
+  method: GET
+  url: '{{base_url_api}}/IntegracaoExterna/Justificativas?descricao={{descricao}}'
+  headers:
+    - name: Accept
+      value: application/json
+    - name: secullumidbancoselecionado
+      value: '{{selected_bank_id}}'
+  params:
+    - name: descricao
+      value: '{{descricao}}'
+      type: query
+  auth: inherit
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+docs: Listar justificativas cadastradas. Filtro opcional por descrição (nomeAbreviado).

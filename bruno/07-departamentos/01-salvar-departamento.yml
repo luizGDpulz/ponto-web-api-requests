@@ -1,0 +1,28 @@
+info:
+  name: Salvar departamento
+  type: http
+  seq: 1
+http:
+  method: POST
+  url: '{{base_url_api}}/IntegracaoExterna/Departamentos'
+  headers:
+    - name: Accept
+      value: application/json
+    - name: secullumidbancoselecionado
+      value: '{{selected_bank_id}}'
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "descricao": "{{descricao}}",
+        "nfolha": "string"
+      }
+  auth: inherit
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+docs: 'Salvar novo departamento. IMPORTANTE: Campo chave é descrição (50c) para identificá-lo em alteração.'

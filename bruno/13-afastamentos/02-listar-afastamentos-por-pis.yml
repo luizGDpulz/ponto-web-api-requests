@@ -1,0 +1,30 @@
+info:
+  name: Listar afastamentos por PIS
+  type: http
+  seq: 2
+http:
+  method: GET
+  url: >-
+    {{base_url_api}}/IntegracaoExterna/FuncionariosAfastamentos?dataInicio={{data_inicio}}&dataFim={{data_fim}}&funcionarioPis={{funcionario_pis}}
+  headers:
+    - name: Accept
+      value: application/json
+    - name: secullumidbancoselecionado
+      value: '{{selected_bank_id}}'
+  params:
+    - name: dataInicio
+      value: '{{data_inicio}}'
+      type: query
+    - name: dataFim
+      value: '{{data_fim}}'
+      type: query
+    - name: funcionarioPis
+      value: '{{funcionario_pis}}'
+      type: query
+  auth: inherit
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+docs: 'Listar afastamentos por PIS. Filtros: dataInício, dataFim, funcionarioPis (obrigatórios).'

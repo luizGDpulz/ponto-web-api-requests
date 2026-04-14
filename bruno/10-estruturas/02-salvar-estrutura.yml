@@ -1,0 +1,42 @@
+info:
+  name: Salvar estrutura
+  type: http
+  seq: 2
+http:
+  method: POST
+  url: '{{base_url_api}}/IntegracaoExterna/Estruturas'
+  headers:
+    - name: Accept
+      value: application/json
+    - name: secullumidbancoselecionado
+      value: '{{selected_bank_id}}'
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "descricao": "{{estrutura_descricao}}",
+        "estruturaPaiDescricao": "Exemplo",
+        "responsaveis": [
+          {
+            "cpf": "{{funcionario_cpf}}",
+            "numeroPis": "{{funcionario_pis}}"
+          }
+        ],
+        "funcionariosVinculados": [
+          {
+            "cpf": "{{funcionario_cpf}}",
+            "numeroPis": "{{funcionario_pis}}"
+          }
+        ]
+      }
+  auth: inherit
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+docs: >-
+  Salvar nova estrutura. Campo chave: descrição (50c). Opcionais: estrutura pai (hierárquico), responsaveis (CPF/PIS),
+  funcionariosVinculados.

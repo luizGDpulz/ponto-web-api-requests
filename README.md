@@ -1,6 +1,10 @@
 # Ponto Web API Requests
 
-Collection Postman da integração externa do Secullum Ponto Web, revisada contra o Swagger vivo e o manual PDF oficial.
+Collection da integração externa do Secullum Ponto Web, revisada contra o Swagger vivo e o manual PDF oficial.
+
+Modelos disponíveis:
+- Postman: [pontoweb_integracao_externa_postman_collection.json](./pontoweb_integracao_externa_postman_collection.json)
+- Bruno/OpenCollection YAML: [bruno](./bruno/)
 
 Links úteis:
 - Swagger UI: [https://pontowebintegracaoexterna.secullum.com.br/docs/index.html](https://pontowebintegracaoexterna.secullum.com.br/docs/index.html)
@@ -14,3 +18,5 @@ Notas rápidas:
 - O Swagger atual expõe `GravarLogsIniciarBkp` e `PontoOffline/AssinaturaArquivo/Assinar`, que não aparecem no PDF.
 
 Documentação expandida e guias de uso devem ficar na wiki do repositório.
+
+Para usar no Bruno 3.x, abra a pasta `bruno/` como collection.

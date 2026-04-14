@@ -1,0 +1,6 @@
+info:
+  name: Horários
+  type: folder
+  seq: 16
+request:
+  auth: inherit

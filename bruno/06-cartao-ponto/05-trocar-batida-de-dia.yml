@@ -1,0 +1,34 @@
+info:
+  name: Trocar batida de dia
+  type: http
+  seq: 5
+http:
+  method: POST
+  url: '{{base_url_api}}/IntegracaoExterna/CartaoPonto/TrocaDia'
+  headers:
+    - name: Accept
+      value: application/json
+    - name: secullumidbancoselecionado
+      value: '{{selected_bank_id}}'
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "cpf": "{{funcionario_cpf}}",
+        "pis": "{{funcionario_pis}}",
+        "numeroFolha": "123",
+        "dataOrigem": "2024-04-17",
+        "dataDestino": "2024-04-18",
+        "coluna": "Saida1"
+      }
+  auth: inherit
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+docs: >-
+  Move uma batida para o dia anterior ou posterior. A diferença entre `dataOrigem` e `dataDestino` deve ser de no máximo
+  um dia.

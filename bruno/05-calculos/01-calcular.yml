@@ -1,0 +1,35 @@
+info:
+  name: Calcular
+  type: http
+  seq: 1
+http:
+  method: POST
+  url: '{{base_url_api}}/IntegracaoExterna/Calcular'
+  headers:
+    - name: Accept
+      value: application/json
+    - name: secullumidbancoselecionado
+      value: '{{selected_bank_id}}'
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "funcionarioPis": "{{funcionario_pis}}",
+        "funcionarioCpf": "{{funcionario_cpf}}",
+        "dataInicial": "2022-06-26",
+        "dataFinal": "2022-06-26",
+        "centrosDeCustos": [
+          "string"
+        ]
+      }
+  auth: inherit
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+docs: >-
+  Consultar cálculos do funcionário. Retorna colunas, linhas e totais de cálculo. LIMITES: Filtro máximo 1 mês. Máximo
+  100 requisições/hora por banco.

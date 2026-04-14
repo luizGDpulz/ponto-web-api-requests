@@ -1,0 +1,6 @@
+info:
+  name: Autenticação e Seleção de Banco
+  type: folder
+  seq: 1
+request:
+  auth: inherit

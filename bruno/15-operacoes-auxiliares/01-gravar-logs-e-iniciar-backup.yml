@@ -1,0 +1,21 @@
+info:
+  name: Gravar logs e iniciar backup
+  type: http
+  seq: 1
+http:
+  method: POST
+  url: '{{base_url_api}}/IntegracaoExterna/GravarLogsIniciarBkp'
+  headers:
+    - name: Accept
+      value: application/json
+    - name: secullumidbancoselecionado
+      value: '{{selected_bank_id}}'
+  auth: inherit
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+docs: >-
+  Endpoint exposto no swagger atual e não documentado no PDF. Não possui corpo e requer apenas o header
+  `secullumidbancoselecionado`.

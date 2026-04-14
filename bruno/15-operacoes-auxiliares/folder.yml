@@ -1,0 +1,6 @@
+info:
+  name: Operações Auxiliares
+  type: folder
+  seq: 15
+request:
+  auth: inherit

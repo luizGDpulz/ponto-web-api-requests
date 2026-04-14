@@ -1,0 +1,32 @@
+info:
+  name: Salvar afastamento
+  type: http
+  seq: 1
+http:
+  method: POST
+  url: '{{base_url_api}}/IntegracaoExterna/FuncionariosAfastamentos'
+  headers:
+    - name: Accept
+      value: application/json
+    - name: secullumidbancoselecionado
+      value: '{{selected_bank_id}}'
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "numeroPis": "{{funcionario_pis}}",
+        "cpf": "{{funcionario_cpf}}",
+        "inicio": "2024-04-17",
+        "fim": "2024-04-18",
+        "motivo": "Atestado médico",
+        "justificativaNome": "ATEST"
+      }
+  auth: inherit
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+docs: Inclui ou altera um afastamento. Informe `numeroPis` ou `cpf`, além de `inicio`, `fim` e `justificativaNome`.

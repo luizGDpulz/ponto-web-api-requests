@@ -1,0 +1,27 @@
+info:
+  name: Assinar arquivo
+  type: http
+  seq: 1
+http:
+  method: POST
+  url: '{{base_url_api}}/IntegracaoExterna/PontoOffline/AssinaturaArquivo/Assinar'
+  headers:
+    - name: Accept
+      value: application/json
+    - name: secullumidbancoselecionado
+      value: '{{selected_bank_id}}'
+  body:
+    type: multipart-form
+    data:
+      - name: file
+        type: file
+        value: []
+  auth: inherit
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+docs: >-
+  Endpoint exposto no swagger atual e não documentado no PDF. Envie o arquivo no campo `file` usando
+  `multipart/form-data`.

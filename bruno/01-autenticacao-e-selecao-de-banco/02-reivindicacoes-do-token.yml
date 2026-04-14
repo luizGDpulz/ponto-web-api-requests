@@ -1,0 +1,23 @@
+info:
+  name: Reivindicações do Token
+  type: http
+  seq: 2
+http:
+  method: POST
+  url: '{{base_url_auth}}/ReinvidicacoesToken'
+  headers:
+    - name: Content-Type
+      value: application/x-www-form-urlencoded
+    - name: Accept
+      value: application/json
+  body:
+    type: form-urlencoded
+    data:
+      - name: token
+        value: '{{access_token}}'
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+docs: Consulta os dados do usuário autenticado.

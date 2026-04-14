@@ -1,0 +1,30 @@
+info:
+  name: Salvar pergunta adicional
+  type: http
+  seq: 1
+http:
+  method: POST
+  url: '{{base_url_api}}/IntegracaoExterna/PerguntasAdicionais'
+  headers:
+    - name: Accept
+      value: application/json
+    - name: secullumidbancoselecionado
+      value: '{{selected_bank_id}}'
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "descricao": "{{pergunta_descricao}}",
+        "grupo": "{{grupo}}",
+        "ordem": 0,
+        "tamanho": 0
+      }
+  auth: inherit
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+docs: 'Tag: Perguntas Adicionais. OperationId: SalvarAsync'

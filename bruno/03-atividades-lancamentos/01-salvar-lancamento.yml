@@ -1,0 +1,37 @@
+info:
+  name: Salvar lançamento
+  type: http
+  seq: 1
+http:
+  method: POST
+  url: '{{base_url_api}}/IntegracaoExterna/AtividadesLancamentos'
+  headers:
+    - name: Accept
+      value: application/json
+    - name: secullumidbancoselecionado
+      value: '{{selected_bank_id}}'
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "funcionarioPis": "{{funcionario_pis}}",
+        "funcionarioCpf": "{{funcionario_cpf}}",
+        "atividadeDescricao": "{{atividade_descricao}}",
+        "dataInicio": "2024-04-17",
+        "horaInicio": "08:00",
+        "dataFim": "2024-04-17",
+        "horaFim": "17:00",
+        "observacao": "Lançamento via Postman",
+        "lancarParaTodos": false
+      }
+  auth: inherit
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+docs: >-
+  Inclui ou altera um lançamento de atividade. Campos mínimos do swagger/manual: `atividadeDescricao`, `dataInicio` e
+  `horaInicio`; para atividade com início/fim, informe também `dataFim` e `horaFim`.

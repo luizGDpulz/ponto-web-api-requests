@@ -1,0 +1,35 @@
+info:
+  name: Adicionar manualmente
+  type: http
+  seq: 3
+http:
+  method: POST
+  url: '{{base_url_api}}/IntegracaoExterna/CartaoPonto/Manual'
+  headers:
+    - name: Accept
+      value: application/json
+    - name: secullumidbancoselecionado
+      value: '{{selected_bank_id}}'
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "cpf": "{{funcionario_cpf}}",
+        "pis": "{{funcionario_pis}}",
+        "numeroFolha": "123",
+        "data": "2024-04-17",
+        "hora": "08:00",
+        "coluna": "Entrada1",
+        "motivo": "Ajuste manual autorizado"
+      }
+  auth: inherit
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+docs: >-
+  Inclui ou edita uma batida manual. Informe ao menos um identificador (`cpf`, `pis` ou `numeroFolha`), além de `data`,
+  `hora`, `coluna` e `motivo`.

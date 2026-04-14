@@ -1,0 +1,48 @@
+info:
+  name: Salvar justificativa
+  type: http
+  seq: 1
+http:
+  method: POST
+  url: '{{base_url_api}}/IntegracaoExterna/Justificativas'
+  headers:
+    - name: Accept
+      value: application/json
+    - name: secullumidbancoselecionado
+      value: '{{selected_bank_id}}'
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "nomeAbreviado": "{{justificativa_descricao}}",
+        "nomeCompleto": "string",
+        "valorDia": "string",
+        "ajuste": false,
+        "abono2": false,
+        "abono3": false,
+        "abono4": false,
+        "lancarComoHorasFalta": false,
+        "naoAbonarHorasNoturnas": false,
+        "descontarHorasBancoDeHoras": false,
+        "naoPermitirFuncionariosUtilizar": false,
+        "exigirFotoAtestado": false,
+        "marcarAutomaticamenteNaoAlterarHorasEmAjuste": false,
+        "descontarDsr": false,
+        "descontarDsrIncluirFeriados": false,
+        "naoCalcularDsr": false,
+        "calcularComoFolga": false,
+        "calcularHorasAtrasoComoFalta": false,
+        "usarJustificativaParaContagemDeFerias": false,
+        "desativar": false
+      }
+  auth: inherit
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+docs: >-
+  Salvar nova justificativa. Campo chave: nomeAbreviado (7c - obrigatório). Opcionais: nomeCompleto (50c), valorDia
+  (HH:mm).

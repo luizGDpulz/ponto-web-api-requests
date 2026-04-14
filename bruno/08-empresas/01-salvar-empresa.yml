@@ -1,0 +1,50 @@
+info:
+  name: Salvar empresa
+  type: http
+  seq: 1
+http:
+  method: POST
+  url: '{{base_url_api}}/IntegracaoExterna/Empresas'
+  headers:
+    - name: Accept
+      value: application/json
+    - name: secullumidbancoselecionado
+      value: '{{selected_bank_id}}'
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "nome": "string",
+        "documento": "{{empresa_documento}}",
+        "inscricao": "string",
+        "endereco": "Rua Exemplo, 100",
+        "bairro": "string",
+        "cidade": "string",
+        "cep": "93700000",
+        "uf": "RS",
+        "pais": "Brasil",
+        "telefone": "51999999999",
+        "fax": "string",
+        "cei": "string",
+        "nFolhaEmpresa": "string",
+        "logotipo": "",
+        "responsavelNome": "string",
+        "responsavelCargo": "string",
+        "responsavelEmail": "usuario@exemplo.com",
+        "tipoDocumento": 0,
+        "configEspecificaInclusaoManualPonto": "string",
+        "utilizaRepC": false,
+        "utilizaRepA": false,
+        "utilizaRepP": false
+      }
+  auth: inherit
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+docs: >-
+  Salvar nova empresa ou alterar existente. Campo chave: documento (CNPJ/CPF). IMPORTANTE: Consulte manual para todos os
+  campos obrigatórios (nome, inscrição, endereço, etc).

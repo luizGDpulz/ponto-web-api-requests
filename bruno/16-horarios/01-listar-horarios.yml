@@ -1,0 +1,23 @@
+info:
+  name: Listar horários
+  type: http
+  seq: 1
+http:
+  method: GET
+  url: '{{base_url_api}}/IntegracaoExterna/Horarios?numero={{horario_numero}}'
+  headers:
+    - name: Accept
+      value: application/json
+    - name: secullumidbancoselecionado
+      value: '{{selected_bank_id}}'
+  params:
+    - name: numero
+      value: '{{horario_numero}}'
+      type: query
+  auth: inherit
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+docs: 'Tag: Horários. OperationId: ListarHorariosAsync'

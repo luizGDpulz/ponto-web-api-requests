@@ -1,0 +1,40 @@
+info:
+  name: Token
+  type: http
+  seq: 1
+http:
+  method: POST
+  url: '{{base_url_auth}}/Token'
+  headers:
+    - name: Content-Type
+      value: application/x-www-form-urlencoded
+    - name: Accept
+      value: application/json
+  body:
+    type: form-urlencoded
+    data:
+      - name: grant_type
+        value: password
+      - name: username
+        value: '{{username}}'
+      - name: password
+        value: '{{password}}'
+      - name: client_id
+        value: '3'
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        test("Status 200", function () {
+          expect(res.status).to.equal(200);
+        });
+
+        if (res.body && res.body.access_token) {
+          bru.setVar("access_token", String(res.body.access_token));
+        }
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+docs: Obtém o access_token via `grant_type=password`. O teste salva automaticamente o valor em `access_token`.

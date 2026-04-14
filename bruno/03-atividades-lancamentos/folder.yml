@@ -1,0 +1,6 @@
+info:
+  name: Atividades Lançamentos
+  type: folder
+  seq: 3
+request:
+  auth: inherit

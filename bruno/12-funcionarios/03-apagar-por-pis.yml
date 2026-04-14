@@ -1,0 +1,23 @@
+info:
+  name: Apagar por PIS
+  type: http
+  seq: 3
+http:
+  method: DELETE
+  url: '{{base_url_api}}/IntegracaoExterna/Funcionarios?pis={{funcionario_pis}}'
+  headers:
+    - name: Accept
+      value: application/json
+    - name: secullumidbancoselecionado
+      value: '{{selected_bank_id}}'
+  params:
+    - name: pis
+      value: '{{funcionario_pis}}'
+      type: query
+  auth: inherit
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+docs: Apagar funcionário pelo PIS.

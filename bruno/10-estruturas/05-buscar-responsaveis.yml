@@ -1,0 +1,23 @@
+info:
+  name: Buscar responsáveis
+  type: http
+  seq: 5
+http:
+  method: GET
+  url: '{{base_url_api}}/IntegracaoExterna/Estruturas/Responsaveis?descricao={{descricao}}'
+  headers:
+    - name: Accept
+      value: application/json
+    - name: secullumidbancoselecionado
+      value: '{{selected_bank_id}}'
+  params:
+    - name: descricao
+      value: '{{descricao}}'
+      type: query
+  auth: inherit
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+docs: Buscar responsáveis de uma estrutura.

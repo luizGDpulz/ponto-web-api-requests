@@ -1,0 +1,38 @@
+info:
+  name: Listar atividades lançadas
+  type: http
+  seq: 2
+http:
+  method: GET
+  url: >-
+    {{base_url_api}}/IntegracaoExterna/AtividadesLancamentos?FuncionarioPis={{funcionario_pis}}&FuncionarioCpf={{funcionario_cpf}}&AtividadeDescricao={{atividade_descricao}}&DataInicio={{data_inicio}}&DataFim={{data_fim}}
+  headers:
+    - name: Accept
+      value: application/json
+    - name: secullumidbancoselecionado
+      value: '{{selected_bank_id}}'
+  params:
+    - name: FuncionarioPis
+      value: '{{funcionario_pis}}'
+      type: query
+    - name: FuncionarioCpf
+      value: '{{funcionario_cpf}}'
+      type: query
+    - name: AtividadeDescricao
+      value: '{{atividade_descricao}}'
+      type: query
+    - name: DataInicio
+      value: '{{data_inicio}}'
+      type: query
+    - name: DataFim
+      value: '{{data_fim}}'
+      type: query
+  auth: inherit
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+docs: >-
+  Lista lançamentos de atividades. Observação: o PDF mostra `HoraInicio`/`HoraFim` no exemplo, mas o swagger atual expõe
+  apenas `FuncionarioPis`, `FuncionarioCpf`, `AtividadeDescricao`, `DataInicio` e `DataFim` neste GET.

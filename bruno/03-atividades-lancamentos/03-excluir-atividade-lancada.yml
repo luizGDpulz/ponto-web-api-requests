@@ -1,0 +1,23 @@
+info:
+  name: Excluir atividade lançada
+  type: http
+  seq: 3
+http:
+  method: DELETE
+  url: '{{base_url_api}}/IntegracaoExterna/AtividadesLancamentos?idLancamentoAtividade={{lancamento_atividade_id}}'
+  headers:
+    - name: Accept
+      value: application/json
+    - name: secullumidbancoselecionado
+      value: '{{selected_bank_id}}'
+  params:
+    - name: idLancamentoAtividade
+      value: '{{lancamento_atividade_id}}'
+      type: query
+  auth: inherit
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+docs: Excluir lançamento de atividade pelo ID obtido via GET.

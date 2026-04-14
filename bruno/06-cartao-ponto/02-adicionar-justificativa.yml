@@ -1,0 +1,34 @@
+info:
+  name: Adicionar justificativa
+  type: http
+  seq: 2
+http:
+  method: POST
+  url: '{{base_url_api}}/IntegracaoExterna/CartaoPonto/Justificativa'
+  headers:
+    - name: Accept
+      value: application/json
+    - name: secullumidbancoselecionado
+      value: '{{selected_bank_id}}'
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "cpf": "{{funcionario_cpf}}",
+        "pis": "{{funcionario_pis}}",
+        "numeroFolha": "123",
+        "data": "2024-04-17",
+        "grupo": 1,
+        "justificativa": "ATEST"
+      }
+  auth: inherit
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+docs: >-
+  Aplica uma justificativa a um grupo de marcações (`grupo` de 1 a 5). Informe ao menos um identificador (`cpf`, `pis`
+  ou `numeroFolha`).

@@ -1,0 +1,23 @@
+info:
+  name: Obter pendências
+  type: http
+  seq: 4
+http:
+  method: GET
+  url: '{{base_url_api}}/IntegracaoExterna/InclusaoPonto/Pendencias?pis={{funcionario_pis}}'
+  headers:
+    - name: Accept
+      value: application/json
+    - name: secullumidbancoselecionado
+      value: '{{selected_bank_id}}'
+  params:
+    - name: pis
+      value: '{{funcionario_pis}}'
+      type: query
+  auth: inherit
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+docs: 'Tag: Incluir Ponto. OperationId: GetPendenciasAsync'
