@@ -17,6 +17,7 @@ Links úteis:
 - Wiki do repositório: [https://github.com/luizGDpulz/ponto-web-api-requests/wiki](https://github.com/luizGDpulz/ponto-web-api-requests/wiki)
 
 Notas rápidas:
+- Este material reflete o estado observado da API em `14/04/2026`. Como a API pode sofrer mudanças depois dessa data, vale conferir o Swagger vivo antes de usar em produção.
 - A collection prioriza o Swagger atual como fonte de verdade quando houver divergência com o PDF.
 - O PDF ainda cita `IntegracaoExterna/Pendencias`, mas essa rota não aparece no Swagger atual.
 - O Swagger atual expõe `GravarLogsIniciarBkp` e `PontoOffline/AssinaturaArquivo/Assinar`, que não aparecem no PDF.
