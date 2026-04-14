@@ -3,9 +3,12 @@
 Artefatos revisados da integração externa do Secullum Ponto Web, validados contra o Swagger vivo e o manual PDF oficial.
 
 Modelos disponíveis:
-- Postman collection: [secullum-ponto-web.postman_collection.json](./secullum-ponto-web.postman_collection.json)
-- Postman environment: [secullum-ponto-web.postman_environment.json](./secullum-ponto-web.postman_environment.json)
+- Postman: [postman](./postman/)
 - Bruno/OpenCollection YAML: [bruno](./bruno/)
+
+Conteúdo da pasta `postman/`:
+- `secullum-ponto-web.postman_collection.json`
+- `secullum-ponto-web.postman_environment.json`
 
 Links úteis:
 - Swagger UI: [https://pontowebintegracaoexterna.secullum.com.br/docs/index.html](https://pontowebintegracaoexterna.secullum.com.br/docs/index.html)
@@ -20,8 +23,8 @@ Notas rápidas:
 
 ## Uso rápido no Postman
 
-1. Importe `secullum-ponto-web.postman_collection.json`.
-2. Importe `secullum-ponto-web.postman_environment.json`.
+1. Importe `postman/secullum-ponto-web.postman_collection.json`.
+2. Importe `postman/secullum-ponto-web.postman_environment.json`.
 3. Selecione o environment importado e preencha pelo menos `username` e `password`.
 4. Execute `Autenticação e Seleção de Banco / Token`.
 5. Execute `Autenticação e Seleção de Banco / Listar Bancos`.
