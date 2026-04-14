@@ -1,0 +1,2728 @@
+{
+  "info": {
+    "name": "Secullum Ponto Web - Integra??o Externa",
+    "_postman_id": "b1119d3e-33b8-4d8e-8a9c-72f8a5756a03",
+    "description": "Collection validada contra o Swagger vivo e o manual PDF da integra??o externa do Secullum Ponto Web.\n\nFluxo recomendado:\n1. Gerar o token em `Autentica??o e Sele??o de Banco/Token`.\n2. Opcionalmente consultar `Reivindica??es do Token`.\n3. Listar bancos e definir `selected_bank_id`.\n4. Executar as rotas de `IntegracaoExterna` com `Authorization: Bearer {{access_token}}` e o header `secullumidbancoselecionado`.\n\nDiverg?ncias observadas entre as fontes:\n- O manual PDF ainda descreve `IntegracaoExterna/Pendencias`, mas essa rota n?o aparece no swagger atual.\n- O swagger atual exp?e `GravarLogsIniciarBkp` e `PontoOffline/AssinaturaArquivo/Assinar`, que n?o aparecem no PDF.\n- Em caso de conflito entre PDF e API viva, esta collection prioriza o swagger atual.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{access_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "base_url_auth",
+      "value": "https://autenticador.secullum.com.br",
+      "type": "string",
+      "description": "Base do autenticador Secullum."
+    },
+    {
+      "key": "base_url_api",
+      "value": "https://pontowebintegracaoexterna.secullum.com.br",
+      "type": "string",
+      "description": "Base da API de integra??o externa do Ponto Web."
+    },
+    {
+      "key": "username",
+      "value": "",
+      "type": "string",
+      "description": "E-mail da Conta Secullum."
+    },
+    {
+      "key": "password",
+      "value": "",
+      "type": "string",
+      "description": "Senha da Conta Secullum."
+    },
+    {
+      "key": "access_token",
+      "value": "",
+      "type": "string",
+      "description": "Token Bearer retornado pela rota /Token."
+    },
+    {
+      "key": "selected_bank_id",
+      "value": "",
+      "type": "string",
+      "description": "Id do banco selecionado para o header secullumidbancoselecionado."
+    },
+    {
+      "key": "selected_bank_identificador",
+      "value": "",
+      "type": "string",
+      "description": "Identificador do banco normalizado sem caracteres especiais, conforme observa??o do manual."
+    },
+    {
+      "key": "selected_bank_name",
+      "value": "",
+      "type": "string",
+      "description": "Nome amig?vel do banco retornado em Listar Bancos."
+    },
+    {
+      "key": "empresa_documento",
+      "value": "12345678000199",
+      "type": "string"
+    },
+    {
+      "key": "horario_numero",
+      "value": "100",
+      "type": "string"
+    },
+    {
+      "key": "funcao_descricao",
+      "value": "Analista de Suporte",
+      "type": "string"
+    },
+    {
+      "key": "departamento_descricao",
+      "value": "Suporte",
+      "type": "string"
+    },
+    {
+      "key": "estrutura_descricao",
+      "value": "Estrutura Exemplo",
+      "type": "string"
+    },
+    {
+      "key": "funcionario_id",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "funcionario_cpf",
+      "value": "03651124029",
+      "type": "string"
+    },
+    {
+      "key": "funcionario_pis",
+      "value": "12345678901",
+      "type": "string"
+    },
+    {
+      "key": "motivo_demissao_descricao",
+      "value": "Pedido de demissão",
+      "type": "string"
+    },
+    {
+      "key": "justificativa_descricao",
+      "value": "ATEST",
+      "type": "string"
+    },
+    {
+      "key": "pergunta_descricao",
+      "value": "Campo adicional de exemplo",
+      "type": "string"
+    },
+    {
+      "key": "grupo",
+      "value": "Integracao",
+      "type": "string"
+    },
+    {
+      "key": "descricao",
+      "value": "Exemplo",
+      "type": "string"
+    },
+    {
+      "key": "data_inicio",
+      "value": "2024-01-01",
+      "type": "string"
+    },
+    {
+      "key": "data_fim",
+      "value": "2024-01-31",
+      "type": "string"
+    },
+    {
+      "key": "hora_inicio",
+      "value": "08:00",
+      "type": "string"
+    },
+    {
+      "key": "hora_fim",
+      "value": "18:00",
+      "type": "string"
+    },
+    {
+      "key": "equipamento_id",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "origem",
+      "value": "8",
+      "type": "string"
+    },
+    {
+      "key": "fonte_dados_id",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "lancamento_atividade_id",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "atividade_descricao",
+      "value": "Atividade Exemplo",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Autenticação e Seleção de Banco",
+      "item": [
+        {
+          "name": "Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_auth}}/Token",
+              "host": [
+                "{{base_url_auth}}"
+              ],
+              "path": [
+                "Token"
+              ]
+            },
+            "description": "Obt?m o access_token via `grant_type=password`. O teste salva automaticamente o valor em `access_token`.",
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "grant_type",
+                  "value": "password",
+                  "type": "text"
+                },
+                {
+                  "key": "username",
+                  "value": "{{username}}",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "{{password}}",
+                  "type": "text"
+                },
+                {
+                  "key": "client_id",
+                  "value": "3",
+                  "type": "text"
+                }
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", function () { pm.response.to.have.status(200); });",
+                  "try {",
+                  "  const data = pm.response.json();",
+                  "  if (data && data.access_token) pm.collectionVariables.set(\"access_token\", data.access_token);",
+                  "} catch (e) { console.log(\"Falha ao ler access_token\"); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Reinvindicações Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_auth}}/ReinvidicacoesToken",
+              "host": [
+                "{{base_url_auth}}"
+              ],
+              "path": [
+                "ReinvidicacoesToken"
+              ]
+            },
+            "description": "Consulta os dados do usuário autenticado.",
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "text"
+                }
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar Bancos",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_auth}}/ContasSecullumExterno/ListarBancos",
+              "host": [
+                "{{base_url_auth}}"
+              ],
+              "path": [
+                "ContasSecullumExterno",
+                "ListarBancos"
+              ]
+            },
+            "description": "Lista os bancos dispon?veis para o token atual. O teste salva o primeiro retorno em `selected_bank_id`, `selected_bank_identificador` e `selected_bank_name`."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", function () { pm.response.to.have.status(200); });",
+                  "try {",
+                  "  const data = pm.response.json();",
+                  "  if (Array.isArray(data) && data.length > 0) {",
+                  "    const first = data[0];",
+                  "    if (first.id !== undefined && first.id !== null) pm.collectionVariables.set(\"selected_bank_id\", String(first.id));",
+                  "    if (first.identificador) pm.collectionVariables.set(\"selected_bank_identificador\", String(first.identificador).replace(/[^a-zA-Z0-9]/g, \"\"));",
+                  "    if (first.nome) pm.collectionVariables.set(\"selected_bank_name\", String(first.nome));",
+                  "  }",
+                  "} catch (e) { console.log(\"Falha ao interpretar lista de bancos\"); }"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Atividades",
+      "item": [
+        {
+          "name": "Salvar atividade",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/Atividades",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "Atividades"
+              ]
+            },
+            "description": "Salvar nova atividade. Campos Obrigatórios: descrição (50c), abreviada (50c), tipo (0=Início e Fim, 1=Registro único).",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"descricao\": \"{{atividade_descricao}}\",\n  \"descricaoAbreviada\": \"ATV EX\",\n  \"tipoDeAtividade\": 0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar atividades",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/Atividades?descricao={{descricao}}",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "Atividades"
+              ],
+              "query": [
+                {
+                  "key": "descricao",
+                  "value": "{{descricao}}"
+                }
+              ]
+            },
+            "description": "Listar atividades cadastradas. Filtro opcional por descrição."
+          },
+          "response": []
+        },
+        {
+          "name": "Apagar atividade",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/Atividades?descricao={{descricao}}",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "Atividades"
+              ],
+              "query": [
+                {
+                  "key": "descricao",
+                  "value": "{{descricao}}"
+                }
+              ]
+            },
+            "description": "Apagar atividade pela descrição. Campo chave: descrição."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Atividades Lançamentos",
+      "item": [
+        {
+          "name": "Salvar lançamento",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/AtividadesLancamentos",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "AtividadesLancamentos"
+              ]
+            },
+            "description": "Inclui ou altera um lan?amento de atividade. Campos m?nimos do swagger/manual: `atividadeDescricao`, `dataInicio` e `horaInicio`; para atividade com in?cio/fim, informe tamb?m `dataFim` e `horaFim`.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"funcionarioPis\": \"{{funcionario_pis}}\",\n  \"funcionarioCpf\": \"{{funcionario_cpf}}\",\n  \"atividadeDescricao\": \"{{atividade_descricao}}\",\n  \"dataInicio\": \"2024-04-17\",\n  \"horaInicio\": \"08:00\",\n  \"dataFim\": \"2024-04-17\",\n  \"horaFim\": \"17:00\",\n  \"observacao\": \"Lan?amento via Postman\",\n  \"lancarParaTodos\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar atividades lançadas",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/AtividadesLancamentos?FuncionarioPis={{funcionario_pis}}&FuncionarioCpf={{funcionario_cpf}}&AtividadeDescricao={{atividade_descricao}}&DataInicio={{data_inicio}}&DataFim={{data_fim}}",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "AtividadesLancamentos"
+              ],
+              "query": [
+                {
+                  "key": "FuncionarioPis",
+                  "value": "{{funcionario_pis}}"
+                },
+                {
+                  "key": "FuncionarioCpf",
+                  "value": "{{funcionario_cpf}}"
+                },
+                {
+                  "key": "AtividadeDescricao",
+                  "value": "{{atividade_descricao}}"
+                },
+                {
+                  "key": "DataInicio",
+                  "value": "{{data_inicio}}"
+                },
+                {
+                  "key": "DataFim",
+                  "value": "{{data_fim}}"
+                }
+              ]
+            },
+            "description": "Lista lan?amentos de atividades. Observa??o: o PDF mostra `HoraInicio`/`HoraFim` no exemplo, mas o swagger atual exp?e apenas `FuncionarioPis`, `FuncionarioCpf`, `AtividadeDescricao`, `DataInicio` e `DataFim` neste GET."
+          },
+          "response": []
+        },
+        {
+          "name": "Excluir atividade lançada",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/AtividadesLancamentos?idLancamentoAtividade={{lancamento_atividade_id}}",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "AtividadesLancamentos"
+              ],
+              "query": [
+                {
+                  "key": "idLancamentoAtividade",
+                  "value": "{{lancamento_atividade_id}}"
+                }
+              ]
+            },
+            "description": "Excluir lançamento de atividade pelo ID obtido via GET."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Batidas",
+      "item": [
+        {
+          "name": "Listar batidas",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/Batidas?DataInicio={{data_inicio}}&DataFim={{data_fim}}&FuncionarioPis={{funcionario_pis}}&FuncionarioCpf={{funcionario_cpf}}&EmpresaDocumento={{empresa_documento}}&HoraInicio={{hora_inicio}}&HoraFim={{hora_fim}}",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "Batidas"
+              ],
+              "query": [
+                {
+                  "key": "DataInicio",
+                  "value": "{{data_inicio}}"
+                },
+                {
+                  "key": "DataFim",
+                  "value": "{{data_fim}}"
+                },
+                {
+                  "key": "FuncionarioPis",
+                  "value": "{{funcionario_pis}}"
+                },
+                {
+                  "key": "FuncionarioCpf",
+                  "value": "{{funcionario_cpf}}"
+                },
+                {
+                  "key": "EmpresaDocumento",
+                  "value": "{{empresa_documento}}"
+                },
+                {
+                  "key": "HoraInicio",
+                  "value": "{{hora_inicio}}"
+                },
+                {
+                  "key": "HoraFim",
+                  "value": "{{hora_fim}}"
+                }
+              ]
+            },
+            "description": "Listar batidas dos funcionários. Filtros opcionais: Hora inicial/final, PIS, CPF, empresa, equipamento. Dados retornam tipo (Original/Manual/Pré-assinalado/Desconsiderado) e origem (Relógio/Manual/Integração Externa)."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Cálculos",
+      "item": [
+        {
+          "name": "Calcular",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/Calcular",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "Calcular"
+              ]
+            },
+            "description": "Consultar cálculos do funcionário. Retorna colunas, linhas e totais de cálculo. LIMITES: Filtro máximo 1 mês. Máximo 100 requisições/hora por banco.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"funcionarioPis\": \"{{funcionario_pis}}\",\n  \"funcionarioCpf\": \"{{funcionario_cpf}}\",\n  \"dataInicial\": \"2022-06-26\",\n  \"dataFinal\": \"2022-06-26\",\n  \"centrosDeCustos\": [\n    \"string\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Calcular apenas totais",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/Calcular/SomenteTotais",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "Calcular",
+                "SomenteTotais"
+              ]
+            },
+            "description": "Consultar apenas totais de cálculo (sem linhas detalhadas). Retorna colunas e totais. LIMITES: Máximo 1 mês. Máximo 100 requisições/hora por banco.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"funcionarioPis\": \"{{funcionario_pis}}\",\n  \"funcionarioCpf\": \"{{funcionario_cpf}}\",\n  \"dataInicial\": \"2022-06-26\",\n  \"dataFinal\": \"2022-06-26\",\n  \"centrosDeCustos\": [\n    \"string\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Cartão Ponto",
+      "item": [
+        {
+          "name": "Exclusão de batida",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/CartaoPonto",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "CartaoPonto"
+              ]
+            },
+            "description": "Exclui uma batida ou justificativa do cart?o ponto. Informe ao menos um identificador (`cpf`, `pis` ou `numeroFolha`), al?m de `data`, `coluna` e `motivo`.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cpf\": \"{{funcionario_cpf}}\",\n  \"pis\": \"{{funcionario_pis}}\",\n  \"numeroFolha\": \"123\",\n  \"data\": \"2024-04-17\",\n  \"coluna\": \"Saida1\",\n  \"motivo\": \"Funcion?rio marcou incorretamente\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Adicionar justificativa",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/CartaoPonto/Justificativa",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "CartaoPonto",
+                "Justificativa"
+              ]
+            },
+            "description": "Aplica uma justificativa a um grupo de marca??es (`grupo` de 1 a 5). Informe ao menos um identificador (`cpf`, `pis` ou `numeroFolha`).",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cpf\": \"{{funcionario_cpf}}\",\n  \"pis\": \"{{funcionario_pis}}\",\n  \"numeroFolha\": \"123\",\n  \"data\": \"2024-04-17\",\n  \"grupo\": 1,\n  \"justificativa\": \"ATEST\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Adicionar manualmente",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/CartaoPonto/Manual",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "CartaoPonto",
+                "Manual"
+              ]
+            },
+            "description": "Inclui ou edita uma batida manual. Informe ao menos um identificador (`cpf`, `pis` ou `numeroFolha`), al?m de `data`, `hora`, `coluna` e `motivo`.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cpf\": \"{{funcionario_cpf}}\",\n  \"pis\": \"{{funcionario_pis}}\",\n  \"numeroFolha\": \"123\",\n  \"data\": \"2024-04-17\",\n  \"hora\": \"08:00\",\n  \"coluna\": \"Entrada1\",\n  \"motivo\": \"Ajuste manual autorizado\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Trocar batida de coluna",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/CartaoPonto/Troca",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "CartaoPonto",
+                "Troca"
+              ]
+            },
+            "description": "Troca o valor de uma coluna por outra no mesmo dia. Informe ao menos um identificador (`cpf`, `pis` ou `numeroFolha`).",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cpf\": \"{{funcionario_cpf}}\",\n  \"pis\": \"{{funcionario_pis}}\",\n  \"numeroFolha\": \"123\",\n  \"data\": \"2024-04-17\",\n  \"colunaOrigem\": \"Saida1\",\n  \"colunaDestino\": \"Saida2\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Trocar batida de dia",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/CartaoPonto/TrocaDia",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "CartaoPonto",
+                "TrocaDia"
+              ]
+            },
+            "description": "Move uma batida para o dia anterior ou posterior. A diferen?a entre `dataOrigem` e `dataDestino` deve ser de no m?ximo um dia.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cpf\": \"{{funcionario_cpf}}\",\n  \"pis\": \"{{funcionario_pis}}\",\n  \"numeroFolha\": \"123\",\n  \"dataOrigem\": \"2024-04-17\",\n  \"dataDestino\": \"2024-04-18\",\n  \"coluna\": \"Saida1\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Departamentos",
+      "item": [
+        {
+          "name": "Salvar departamento",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/Departamentos",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "Departamentos"
+              ]
+            },
+            "description": "Salvar novo departamento. IMPORTANTE: Campo chave é descrição (50c) para identificá-lo em alteração.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"descricao\": \"{{descricao}}\",\n  \"nfolha\": \"string\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar departamentos",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/Departamentos?descricao={{descricao}}",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "Departamentos"
+              ],
+              "query": [
+                {
+                  "key": "descricao",
+                  "value": "{{descricao}}"
+                }
+              ]
+            },
+            "description": "Listar departamentos. Filtro opcional por descrição."
+          },
+          "response": []
+        },
+        {
+          "name": "Apagar departamento",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/Departamentos?descricao={{descricao}}",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "Departamentos"
+              ],
+              "query": [
+                {
+                  "key": "descricao",
+                  "value": "{{descricao}}"
+                }
+              ]
+            },
+            "description": "Apagar departamento pelo descrição."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Empresas",
+      "item": [
+        {
+          "name": "Salvar empresa",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/Empresas",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "Empresas"
+              ]
+            },
+            "description": "Salvar nova empresa ou alterar existente. Campo chave: documento (CNPJ/CPF). IMPORTANTE: Consulte manual para todos os campos obrigatórios (nome, inscrição, endereço, etc).",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"string\",\n  \"documento\": \"{{empresa_documento}}\",\n  \"inscricao\": \"string\",\n  \"endereco\": \"Rua Exemplo, 100\",\n  \"bairro\": \"string\",\n  \"cidade\": \"string\",\n  \"cep\": \"93700000\",\n  \"uf\": \"RS\",\n  \"pais\": \"Brasil\",\n  \"telefone\": \"51999999999\",\n  \"fax\": \"string\",\n  \"cei\": \"string\",\n  \"nFolhaEmpresa\": \"string\",\n  \"logotipo\": \"\",\n  \"responsavelNome\": \"string\",\n  \"responsavelCargo\": \"string\",\n  \"responsavelEmail\": \"usuario@exemplo.com\",\n  \"tipoDocumento\": 0,\n  \"configEspecificaInclusaoManualPonto\": \"string\",\n  \"utilizaRepC\": false,\n  \"utilizaRepA\": false,\n  \"utilizaRepP\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar empresas",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/Empresas?cnpjCpf={{empresa_documento}}",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "Empresas"
+              ],
+              "query": [
+                {
+                  "key": "cnpjCpf",
+                  "value": "{{empresa_documento}}"
+                }
+              ]
+            },
+            "description": "Listar empresas. Filtro opcional por CNPJ/CPF."
+          },
+          "response": []
+        },
+        {
+          "name": "Apagar empresa",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/Empresas?cnpjCpf={{empresa_documento}}",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "Empresas"
+              ],
+              "query": [
+                {
+                  "key": "cnpjCpf",
+                  "value": "{{empresa_documento}}"
+                }
+              ]
+            },
+            "description": "Apagar empresa pelo CNPJ/CPF."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Equipamentos",
+      "item": [
+        {
+          "name": "Listar equipamentos",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/Equipamentos",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "Equipamentos"
+              ]
+            },
+            "description": "Listar equipamentos cadastrados e seus dados."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Estruturas",
+      "item": [
+        {
+          "name": "Listar estrutura",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/Estruturas",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "Estruturas"
+              ]
+            },
+            "description": "Listar estruturas cadastradas no sistema."
+          },
+          "response": []
+        },
+        {
+          "name": "Salvar estrutura",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/Estruturas",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "Estruturas"
+              ]
+            },
+            "description": "Salvar nova estrutura. Campo chave: descrição (50c). Opcionais: estrutura pai (hierárquico), responsaveis (CPF/PIS), funcionariosVinculados.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"descricao\": \"{{estrutura_descricao}}\",\n  \"estruturaPaiDescricao\": \"Exemplo\",\n  \"responsaveis\": [\n    {\n      \"cpf\": \"{{funcionario_cpf}}\",\n      \"numeroPis\": \"{{funcionario_pis}}\"\n    }\n  ],\n  \"funcionariosVinculados\": [\n    {\n      \"cpf\": \"{{funcionario_cpf}}\",\n      \"numeroPis\": \"{{funcionario_pis}}\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Apagar estrutura",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/Estruturas?descricao={{descricao}}",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "Estruturas"
+              ],
+              "query": [
+                {
+                  "key": "descricao",
+                  "value": "{{descricao}}"
+                }
+              ]
+            },
+            "description": "Apagar estrutura pela descrição."
+          },
+          "response": []
+        },
+        {
+          "name": "Buscar funcionários",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/Estruturas/Funcionarios?descricaoEstrutura={{estrutura_descricao}}",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "Estruturas",
+                "Funcionarios"
+              ],
+              "query": [
+                {
+                  "key": "descricaoEstrutura",
+                  "value": "{{estrutura_descricao}}"
+                }
+              ]
+            },
+            "description": "Buscar funcionários vinculados a uma estrutura."
+          },
+          "response": []
+        },
+        {
+          "name": "Buscar responsáveis",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/Estruturas/Responsaveis?descricao={{descricao}}",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "Estruturas",
+                "Responsaveis"
+              ],
+              "query": [
+                {
+                  "key": "descricao",
+                  "value": "{{descricao}}"
+                }
+              ]
+            },
+            "description": "Buscar responsáveis de uma estrutura."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Fonte de Dados",
+      "item": [
+        {
+          "name": "Listar fonte de dados",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/FonteDados?DataInicio={{data_inicio}}&DataFim={{data_fim}}&HoraInicio={{hora_inicio}}&HoraFim={{hora_fim}}&FuncionarioPis={{funcionario_pis}}&FuncionarioCpf={{funcionario_cpf}}&EquipamentoId={{equipamento_id}}&Origem={{origem}}",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "FonteDados"
+              ],
+              "query": [
+                {
+                  "key": "DataInicio",
+                  "value": "{{data_inicio}}"
+                },
+                {
+                  "key": "DataFim",
+                  "value": "{{data_fim}}"
+                },
+                {
+                  "key": "HoraInicio",
+                  "value": "{{hora_inicio}}"
+                },
+                {
+                  "key": "HoraFim",
+                  "value": "{{hora_fim}}"
+                },
+                {
+                  "key": "FuncionarioPis",
+                  "value": "{{funcionario_pis}}"
+                },
+                {
+                  "key": "FuncionarioCpf",
+                  "value": "{{funcionario_cpf}}"
+                },
+                {
+                  "key": "EquipamentoId",
+                  "value": "{{equipamento_id}}"
+                },
+                {
+                  "key": "Origem",
+                  "value": "{{origem}}"
+                }
+              ]
+            },
+            "description": "Tag: Fonte de Dados. OperationId: ListarFonteDadosAsync"
+          },
+          "response": []
+        },
+        {
+          "name": "Listar a partir do ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/FonteDados/APartirDoId?fonteDadosId={{fonte_dados_id}}",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "FonteDados",
+                "APartirDoId"
+              ],
+              "query": [
+                {
+                  "key": "fonteDadosId",
+                  "value": "{{fonte_dados_id}}"
+                }
+              ]
+            },
+            "description": "Tag: Fonte de Dados. OperationId: ListarFonteDadosAsync"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Funcionários",
+      "item": [
+        {
+          "name": "Salvar funcionário",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/Funcionarios",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "Funcionarios"
+              ]
+            },
+            "description": "Salvar novo funcionário. Campos obrigatórios: nome, numeroFolha, CPF, admiténcia, empresa, horário, departamento, função. Campo chave: CPF. IMPORTANTE: Consulte manual para PIS/PASEP (pode ser obrigatório com equipamentos REP-A/REP-C).",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"empresaId\": 1,\n  \"nome\": \"string\",\n  \"numeroFolha\": \"string\",\n  \"numeroIdentificador\": \"string\",\n  \"codigoHolerite\": \"string\",\n  \"numeroPis\": \"{{funcionario_pis}}\",\n  \"carteira\": \"string\",\n  \"observacao\": \"string\",\n  \"endereco\": \"Rua Exemplo, 100\",\n  \"bairro\": \"string\",\n  \"cidade\": \"string\",\n  \"uf\": \"RS\",\n  \"cep\": \"93700000\",\n  \"telefone\": \"51999999999\",\n  \"celular\": \"51999999999\",\n  \"email\": \"usuario@exemplo.com\",\n  \"rg\": \"string\",\n  \"expedicaoRg\": \"2022-06-26\",\n  \"ssp\": \"string\",\n  \"cpf\": \"{{funcionario_cpf}}\",\n  \"mae\": \"string\",\n  \"pai\": \"string\",\n  \"nascimento\": \"2022-06-26\",\n  \"naoVerificarDigital\": false,\n  \"masculino\": false,\n  \"master\": false,\n  \"nacionalidade\": \"string\",\n  \"naturalidade\": \"string\",\n  \"numeroProvisorio\": \"string\",\n  \"admissao\": \"2022-06-26\",\n  \"demissao\": \"2022-06-26\",\n  \"empresaCnpjCpf\": \"{{empresa_documento}}\",\n  \"horarioNumero\": 100,\n  \"departamentoDescricao\": \"{{departamento_descricao}}\",\n  \"funcaoDescricao\": \"{{funcao_descricao}}\",\n  \"filtro1Descricao\": \"Exemplo\",\n  \"filtro2Descricao\": \"Exemplo\",\n  \"motivoDemissaoDescricao\": \"Exemplo\",\n  \"senhaEquipamento\": 0,\n  \"foto\": \"\",\n  \"alterouFoto\": false,\n  \"invisivel\": false,\n  \"desabilitarAssinaturaEletronica\": false,\n  \"descricaoEstrutura\": \"{{descricaoestrutura}}\",\n  \"duplicarDemitido\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar por PIS",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/Funcionarios?pis={{funcionario_pis}}",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "Funcionarios"
+              ],
+              "query": [
+                {
+                  "key": "pis",
+                  "value": "{{funcionario_pis}}"
+                }
+              ]
+            },
+            "description": "Listar funcionário pelo PIS."
+          },
+          "response": []
+        },
+        {
+          "name": "Apagar por PIS",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/Funcionarios?pis={{funcionario_pis}}",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "Funcionarios"
+              ],
+              "query": [
+                {
+                  "key": "pis",
+                  "value": "{{funcionario_pis}}"
+                }
+              ]
+            },
+            "description": "Apagar funcionário pelo PIS."
+          },
+          "response": []
+        },
+        {
+          "name": "Listar funcionários por CPF",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/Funcionarios/Cpf?cpf={{funcionario_cpf}}",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "Funcionarios",
+                "Cpf"
+              ],
+              "query": [
+                {
+                  "key": "cpf",
+                  "value": "{{funcionario_cpf}}"
+                }
+              ]
+            },
+            "description": "Tag: Funcionários. OperationId: ListarFuncionariosPorCpfAsync"
+          },
+          "response": []
+        },
+        {
+          "name": "Apagar funcionário por CPF",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/Funcionarios/Cpf?cpf={{funcionario_cpf}}",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "Funcionarios",
+                "Cpf"
+              ],
+              "query": [
+                {
+                  "key": "cpf",
+                  "value": "{{funcionario_cpf}}"
+                }
+              ]
+            },
+            "description": "Tag: Funcionários. OperationId: ApagarFuncionarioPorCpfAsync"
+          },
+          "response": []
+        },
+        {
+          "name": "Obter foto",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/Funcionarios/Fotos?funcionarioId={{funcionario_id}}",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "Funcionarios",
+                "Fotos"
+              ],
+              "query": [
+                {
+                  "key": "funcionarioId",
+                  "value": "{{funcionario_id}}"
+                }
+              ]
+            },
+            "description": "Tag: Funcionários. OperationId: ObterFotoAsync"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Afastamentos",
+      "item": [
+        {
+          "name": "Salvar afastamento",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/FuncionariosAfastamentos",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "FuncionariosAfastamentos"
+              ]
+            },
+            "description": "Inclui ou altera um afastamento. Informe `numeroPis` ou `cpf`, al?m de `inicio`, `fim` e `justificativaNome`.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numeroPis\": \"{{funcionario_pis}}\",\n  \"cpf\": \"{{funcionario_cpf}}\",\n  \"inicio\": \"2024-04-17\",\n  \"fim\": \"2024-04-18\",\n  \"motivo\": \"Atestado m?dico\",\n  \"justificativaNome\": \"ATEST\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar afastamentos por PIS",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/FuncionariosAfastamentos?dataInicio={{data_inicio}}&dataFim={{data_fim}}&funcionarioPis={{funcionario_pis}}",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "FuncionariosAfastamentos"
+              ],
+              "query": [
+                {
+                  "key": "dataInicio",
+                  "value": "{{data_inicio}}"
+                },
+                {
+                  "key": "dataFim",
+                  "value": "{{data_fim}}"
+                },
+                {
+                  "key": "funcionarioPis",
+                  "value": "{{funcionario_pis}}"
+                }
+              ]
+            },
+            "description": "Listar afastamentos por PIS. Filtros: dataInício, dataFim, funcionarioPis (obrigatórios)."
+          },
+          "response": []
+        },
+        {
+          "name": "Apagar afastamento por PIS",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/FuncionariosAfastamentos?dataInicio={{data_inicio}}&dataFim={{data_fim}}&funcionarioPis={{funcionario_pis}}",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "FuncionariosAfastamentos"
+              ],
+              "query": [
+                {
+                  "key": "dataInicio",
+                  "value": "{{data_inicio}}"
+                },
+                {
+                  "key": "dataFim",
+                  "value": "{{data_fim}}"
+                },
+                {
+                  "key": "funcionarioPis",
+                  "value": "{{funcionario_pis}}"
+                }
+              ]
+            },
+            "description": "Apagar afastamento por PIS. Filtros: dataInício, dataFim, funcionarioPis."
+          },
+          "response": []
+        },
+        {
+          "name": "Listar afastamentos por CPF",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/FuncionariosAfastamentos/Cpf?dataInicio={{data_inicio}}&dataFim={{data_fim}}&funcionarioCpf={{funcionario_cpf}}",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "FuncionariosAfastamentos",
+                "Cpf"
+              ],
+              "query": [
+                {
+                  "key": "dataInicio",
+                  "value": "{{data_inicio}}"
+                },
+                {
+                  "key": "dataFim",
+                  "value": "{{data_fim}}"
+                },
+                {
+                  "key": "funcionarioCpf",
+                  "value": "{{funcionario_cpf}}"
+                }
+              ]
+            },
+            "description": "Listar afastamentos pelo CPF. Filtros: dataInício, dataFim, funcionarioCpf."
+          },
+          "response": []
+        },
+        {
+          "name": "Apagar afastamento por CPF",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/FuncionariosAfastamentos/Cpf?dataInicio={{data_inicio}}&dataFim={{data_fim}}&funcionarioCpf={{funcionario_cpf}}",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "FuncionariosAfastamentos",
+                "Cpf"
+              ],
+              "query": [
+                {
+                  "key": "dataInicio",
+                  "value": "{{data_inicio}}"
+                },
+                {
+                  "key": "dataFim",
+                  "value": "{{data_fim}}"
+                },
+                {
+                  "key": "funcionarioCpf",
+                  "value": "{{funcionario_cpf}}"
+                }
+              ]
+            },
+            "description": "Apagar afastamento pelo CPF. Filtros: dataInício, dataFim, funcionarioCpf."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Funções",
+      "item": [
+        {
+          "name": "Salvar função",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/Funcoes",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "Funcoes"
+              ]
+            },
+            "description": "Salvar nova função. Campo chave: descrição (50c).",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"descricao\": \"{{descricao}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar funções",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/Funcoes?descricao={{descricao}}",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "Funcoes"
+              ],
+              "query": [
+                {
+                  "key": "descricao",
+                  "value": "{{descricao}}"
+                }
+              ]
+            },
+            "description": "Tag: Funções. OperationId: ListarFuncoesAsync"
+          },
+          "response": []
+        },
+        {
+          "name": "Apagar função",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/Funcoes?descricao={{descricao}}",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "Funcoes"
+              ],
+              "query": [
+                {
+                  "key": "descricao",
+                  "value": "{{descricao}}"
+                }
+              ]
+            },
+            "description": "Tag: Funções. OperationId: ApagarFuncao"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Opera??es Auxiliares",
+      "item": [
+        {
+          "name": "Gravar logs e iniciar backup",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/GravarLogsIniciarBkp",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "GravarLogsIniciarBkp"
+              ]
+            },
+            "description": "Endpoint exposto no swagger atual e n?o documentado no PDF. N?o possui corpo e requer apenas o header `secullumidbancoselecionado`."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Horários",
+      "item": [
+        {
+          "name": "Listar horários",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/Horarios?numero={{horario_numero}}",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "Horarios"
+              ],
+              "query": [
+                {
+                  "key": "numero",
+                  "value": "{{horario_numero}}"
+                }
+              ]
+            },
+            "description": "Tag: Horários. OperationId: ListarHorariosAsync"
+          },
+          "response": []
+        },
+        {
+          "name": "Apagar horário",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/Horarios?numero={{horario_numero}}",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "Horarios"
+              ],
+              "query": [
+                {
+                  "key": "numero",
+                  "value": "{{horario_numero}}"
+                }
+              ]
+            },
+            "description": "Tag: Horários. OperationId: ApagarHorarioAsync"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Incluir Ponto",
+      "item": [
+        {
+          "name": "Obter configurações",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/InclusaoPonto/Configuracoes?pis={{funcionario_pis}}",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "InclusaoPonto",
+                "Configuracoes"
+              ],
+              "query": [
+                {
+                  "key": "pis",
+                  "value": "{{funcionario_pis}}"
+                }
+              ]
+            },
+            "description": "Tag: Incluir Ponto. OperationId: GetConfiguracoesAsync"
+          },
+          "response": []
+        },
+        {
+          "name": "Obter configurações por CPF",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/InclusaoPonto/Configuracoes/Cpf?cpf={{funcionario_cpf}}",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "InclusaoPonto",
+                "Configuracoes",
+                "Cpf"
+              ],
+              "query": [
+                {
+                  "key": "cpf",
+                  "value": "{{funcionario_cpf}}"
+                }
+              ]
+            },
+            "description": "Tag: Incluir Ponto. OperationId: GetConfiguracoesPorCpfAsync"
+          },
+          "response": []
+        },
+        {
+          "name": "Incluir ponto",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/InclusaoPonto/Incluir",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "InclusaoPonto",
+                "Incluir"
+              ]
+            },
+            "description": "Cria uma nova inclus?o de ponto. Se `marcacaoOffline=true`, informe `dataHora` no formato `yyyy-MM-ddTHH:mm`; caso contr?rio, a API usa a data/hora do servidor.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pis\": \"{{funcionario_pis}}\",\n  \"cpf\": \"{{funcionario_cpf}}\",\n  \"endereco\": \"Rua Exemplo, 100\",\n  \"latitude\": -30.0346,\n  \"longitude\": -51.2177,\n  \"precisao\": 10,\n  \"dataHora\": \"2024-04-17T14:30\",\n  \"justificativa\": \"ATEST\",\n  \"foto\": \"\",\n  \"identificacaoDispositivo\": \"android-sm-s911b\",\n  \"marcacaoOffline\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obter pendências",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/InclusaoPonto/Pendencias?pis={{funcionario_pis}}",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "InclusaoPonto",
+                "Pendencias"
+              ],
+              "query": [
+                {
+                  "key": "pis",
+                  "value": "{{funcionario_pis}}"
+                }
+              ]
+            },
+            "description": "Tag: Incluir Ponto. OperationId: GetPendenciasAsync"
+          },
+          "response": []
+        },
+        {
+          "name": "Obter pendências por CPF",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/InclusaoPonto/Pendencias/Cpf?cpf={{funcionario_cpf}}",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "InclusaoPonto",
+                "Pendencias",
+                "Cpf"
+              ],
+              "query": [
+                {
+                  "key": "cpf",
+                  "value": "{{funcionario_cpf}}"
+                }
+              ]
+            },
+            "description": "Tag: Incluir Ponto. OperationId: GetPendenciasPorCpfAsync"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Justificativas",
+      "item": [
+        {
+          "name": "Salvar justificativa",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/Justificativas",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "Justificativas"
+              ]
+            },
+            "description": "Salvar nova justificativa. Campo chave: nomeAbreviado (7c - obrigatório). Opcionais: nomeCompleto (50c), valorDia (HH:mm).",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nomeAbreviado\": \"{{justificativa_descricao}}\",\n  \"nomeCompleto\": \"string\",\n  \"valorDia\": \"string\",\n  \"ajuste\": false,\n  \"abono2\": false,\n  \"abono3\": false,\n  \"abono4\": false,\n  \"lancarComoHorasFalta\": false,\n  \"naoAbonarHorasNoturnas\": false,\n  \"descontarHorasBancoDeHoras\": false,\n  \"naoPermitirFuncionariosUtilizar\": false,\n  \"exigirFotoAtestado\": false,\n  \"marcarAutomaticamenteNaoAlterarHorasEmAjuste\": false,\n  \"descontarDsr\": false,\n  \"descontarDsrIncluirFeriados\": false,\n  \"naoCalcularDsr\": false,\n  \"calcularComoFolga\": false,\n  \"calcularHorasAtrasoComoFalta\": false,\n  \"usarJustificativaParaContagemDeFerias\": false,\n  \"desativar\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar justificativas",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/Justificativas?descricao={{descricao}}",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "Justificativas"
+              ],
+              "query": [
+                {
+                  "key": "descricao",
+                  "value": "{{descricao}}"
+                }
+              ]
+            },
+            "description": "Listar justificativas cadastradas. Filtro opcional por descrição (nomeAbreviado)."
+          },
+          "response": []
+        },
+        {
+          "name": "Apagar justificativa",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/Justificativas?descricao={{descricao}}",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "Justificativas"
+              ],
+              "query": [
+                {
+                  "key": "descricao",
+                  "value": "{{descricao}}"
+                }
+              ]
+            },
+            "description": "Apagar justificativa pela descrição (nomeAbreviado)."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Motivos de Demissão",
+      "item": [
+        {
+          "name": "Salvar motivo de demissão",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/MotivosDemissao",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "MotivosDemissao"
+              ]
+            },
+            "description": "Salvar novo motivo de demissão. Campo: descrição (50c, obrigatório).",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"descricao\": \"{{motivo_demissao_descricao}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar motivos de demissão",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/MotivosDemissao?descricao={{descricao}}",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "MotivosDemissao"
+              ],
+              "query": [
+                {
+                  "key": "descricao",
+                  "value": "{{descricao}}"
+                }
+              ]
+            },
+            "description": "Listar motivos de demissão cadastrados. Filtro opcional por descrição."
+          },
+          "response": []
+        },
+        {
+          "name": "Apagar motivo de demissão",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/MotivosDemissao?descricao={{descricao}}",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "MotivosDemissao"
+              ],
+              "query": [
+                {
+                  "key": "descricao",
+                  "value": "{{descricao}}"
+                }
+              ]
+            },
+            "description": "Apagar motivo de demissão pela descrição."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Perguntas Adicionais",
+      "item": [
+        {
+          "name": "Salvar pergunta adicional",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/PerguntasAdicionais",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "PerguntasAdicionais"
+              ]
+            },
+            "description": "Tag: Perguntas Adicionais. OperationId: SalvarAsync",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"descricao\": \"{{pergunta_descricao}}\",\n  \"grupo\": \"{{grupo}}\",\n  \"ordem\": 0,\n  \"tamanho\": 0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar perguntas adicionais",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/PerguntasAdicionais?descricao={{descricao}}&grupo={{grupo}}",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "PerguntasAdicionais"
+              ],
+              "query": [
+                {
+                  "key": "descricao",
+                  "value": "{{descricao}}"
+                },
+                {
+                  "key": "grupo",
+                  "value": "{{grupo}}"
+                }
+              ]
+            },
+            "description": "Tag: Perguntas Adicionais. OperationId: ListarPerguntasAdicionaisAsync"
+          },
+          "response": []
+        },
+        {
+          "name": "Apagar pergunta adicional",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/PerguntasAdicionais?descricao={{descricao}}&grupo={{grupo}}",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "PerguntasAdicionais"
+              ],
+              "query": [
+                {
+                  "key": "descricao",
+                  "value": "{{descricao}}"
+                },
+                {
+                  "key": "grupo",
+                  "value": "{{grupo}}"
+                }
+              ]
+            },
+            "description": "Tag: Perguntas Adicionais. OperationId: ApagarPerguntaAdicionalAsync"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Ponto Offline",
+      "item": [
+        {
+          "name": "Assinar arquivo",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "secullumidbancoselecionado",
+                "value": "{{selected_bank_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url_api}}/IntegracaoExterna/PontoOffline/AssinaturaArquivo/Assinar",
+              "host": [
+                "{{base_url_api}}"
+              ],
+              "path": [
+                "IntegracaoExterna",
+                "PontoOffline",
+                "AssinaturaArquivo",
+                "Assinar"
+              ]
+            },
+            "description": "Endpoint exposto no swagger atual e n?o documentado no PDF. Envie o arquivo no campo `file` usando `multipart/form-data`.",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
