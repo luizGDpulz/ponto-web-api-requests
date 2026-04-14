@@ -1,9 +1,10 @@
 # Ponto Web API Requests
 
-Collection da integração externa do Secullum Ponto Web, revisada contra o Swagger vivo e o manual PDF oficial.
+Artefatos revisados da integração externa do Secullum Ponto Web, validados contra o Swagger vivo e o manual PDF oficial.
 
 Modelos disponíveis:
-- Postman: [pontoweb_integracao_externa_postman_collection.json](./pontoweb_integracao_externa_postman_collection.json)
+- Postman collection: [secullum-ponto-web.postman_collection.json](./secullum-ponto-web.postman_collection.json)
+- Postman environment: [secullum-ponto-web.postman_environment.json](./secullum-ponto-web.postman_environment.json)
 - Bruno/OpenCollection YAML: [bruno](./bruno/)
 
 Links úteis:
@@ -17,6 +18,23 @@ Notas rápidas:
 - O PDF ainda cita `IntegracaoExterna/Pendencias`, mas essa rota não aparece no Swagger atual.
 - O Swagger atual expõe `GravarLogsIniciarBkp` e `PontoOffline/AssinaturaArquivo/Assinar`, que não aparecem no PDF.
 
-Documentação expandida e guias de uso devem ficar na wiki do repositório.
+## Uso rápido no Postman
 
-Para usar no Bruno 3.x, abra a pasta `bruno/` como collection.
+1. Importe `secullum-ponto-web.postman_collection.json`.
+2. Importe `secullum-ponto-web.postman_environment.json`.
+3. Selecione o environment importado e preencha pelo menos `username` e `password`.
+4. Execute `Autenticação e Seleção de Banco / Token`.
+5. Execute `Autenticação e Seleção de Banco / Listar Bancos`.
+6. Rode as demais requests da API.
+
+Fluxo automático:
+- `Token` grava `access_token` automaticamente na collection e também no environment ativo.
+- `Listar Bancos` grava `selected_bank_id`, `selected_bank_identificador` e `selected_bank_name` automaticamente na collection e também no environment ativo.
+- As demais requests já herdam `Authorization: Bearer {{access_token}}` e enviam `secullumidbancoselecionado: {{selected_bank_id}}`.
+- Se você não selecionar environment, a collection ainda funciona via collection variables; com environment ativo, os valores ficam persistidos nele também.
+
+## Uso no Bruno
+
+Abra a pasta `bruno/` como collection no Bruno 3.x.
+
+Documentação expandida e guias de uso devem ficar na wiki do repositório.

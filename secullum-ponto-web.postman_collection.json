@@ -202,7 +202,7 @@
                 "Token"
               ]
             },
-            "description": "Obtém o access_token via `grant_type=password`. O teste salva automaticamente o valor em `access_token`.",
+            "description": "Obtém o access_token via `grant_type=password`. O teste salva automaticamente o valor em `access_token` na collection e no environment ativo.",
             "body": {
               "mode": "urlencoded",
               "urlencoded": [
@@ -242,7 +242,11 @@
                   "pm.test(\"Status 200\", function () { pm.response.to.have.status(200); });",
                   "try {",
                   "  const data = pm.response.json();",
-                  "  if (data && data.access_token) pm.collectionVariables.set(\"access_token\", data.access_token);",
+                  "  if (data && data.access_token) {",
+                  "    const token = String(data.access_token);",
+                  "    pm.collectionVariables.set(\"access_token\", token);",
+                  "    try { pm.environment.set(\"access_token\", token); } catch (envError) { console.log(\"Sem environment ativo para access_token\"); }",
+                  "  }",
                   "} catch (e) { console.log(\"Falha ao ler access_token\"); }"
                 ]
               }
@@ -309,7 +313,7 @@
                 "ListarBancos"
               ]
             },
-            "description": "Lista os bancos disponíveis para o token atual. O teste salva o primeiro retorno em `selected_bank_id`, `selected_bank_identificador` e `selected_bank_name`."
+            "description": "Lista os bancos disponíveis para o token atual. O teste salva o primeiro retorno em `selected_bank_id`, `selected_bank_identificador` e `selected_bank_name` na collection e no environment ativo."
           },
           "response": [],
           "event": [
@@ -323,9 +327,21 @@
                   "  const data = pm.response.json();",
                   "  if (Array.isArray(data) && data.length > 0) {",
                   "    const first = data[0];",
-                  "    if (first.id !== undefined && first.id !== null) pm.collectionVariables.set(\"selected_bank_id\", String(first.id));",
-                  "    if (first.identificador) pm.collectionVariables.set(\"selected_bank_identificador\", String(first.identificador).replace(/[^a-zA-Z0-9]/g, \"\"));",
-                  "    if (first.nome) pm.collectionVariables.set(\"selected_bank_name\", String(first.nome));",
+                  "    if (first.id !== undefined && first.id !== null) {",
+                  "      const bankId = String(first.id);",
+                  "      pm.collectionVariables.set(\"selected_bank_id\", bankId);",
+                  "      try { pm.environment.set(\"selected_bank_id\", bankId); } catch (envError) { console.log(\"Sem environment ativo para selected_bank_id\"); }",
+                  "    }",
+                  "    if (first.identificador) {",
+                  "      const bankIdentifier = String(first.identificador).replace(/[^a-zA-Z0-9]/g, \"\");",
+                  "      pm.collectionVariables.set(\"selected_bank_identificador\", bankIdentifier);",
+                  "      try { pm.environment.set(\"selected_bank_identificador\", bankIdentifier); } catch (envError) { console.log(\"Sem environment ativo para selected_bank_identificador\"); }",
+                  "    }",
+                  "    if (first.nome) {",
+                  "      const bankName = String(first.nome);",
+                  "      pm.collectionVariables.set(\"selected_bank_name\", bankName);",
+                  "      try { pm.environment.set(\"selected_bank_name\", bankName); } catch (envError) { console.log(\"Sem environment ativo para selected_bank_name\"); }",
+                  "    }",
                   "  }",
                   "} catch (e) { console.log(\"Falha ao interpretar lista de bancos\"); }"
                 ]
